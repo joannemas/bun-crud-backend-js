@@ -22,7 +22,8 @@ window.addEventListener("DOMContentLoaded", function () {
             pokemons.forEach((pokemon) => {
                 const listItem = document.createElement("li");
                 listItem.innerHTML = `
-                    ID: ${pokemon.id} <br> Name: ${pokemon.name} <br> Type: ${pokemon.type}
+                    ID: ${pokemon._id} <br> Name: ${pokemon.name} <br> Type: ${pokemon.type}
+                    <button class="deleteButton" data-id="${pokemon._id}">Supprimer</button>
                 `;
                 pokemonList.appendChild(listItem);
             });
@@ -35,9 +36,18 @@ window.addEventListener("DOMContentLoaded", function () {
     // Appeler la fonction pour afficher la liste des Pokémons au chargement de la page
     displayPokemons();
 
+    document.getElementById("pokemonList").addEventListener("click", (event) => {
+        if (event.target.classList.contains("deleteButton")) {
+            const pokemonId = event.target.getAttribute("data-id");
+            console.log(`Suppression du Pokémon avec l'identifiant ${pokemonId}`);
+            if (confirm("Voulez-vous vraiment supprimer ce Pokémon ?")) {
+                deletePokemon(pokemonId);
+            }
+        }
+    });       
+
     // Fonction pour ajouter un nouveau Pokémon
     function addPokemon() {
-        console.log("Ajout d'un nouveau Pokémon");
         const newPokemon = prompt("Entrez le nom et le type du Pokémon (séparés par une virgule)");
         if (newPokemon) {
             const [name, type] = newPokemon.split(",");
@@ -56,38 +66,42 @@ window.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .then((data) => {
-                const {id } = data.id; // Extrait l'identifiant du Pokémon depuis la réponse
+                const { id } = data; // Extrait l'identifiant du Pokémon depuis la réponse
                 console.log(`Nouveau Pokémon ajouté avec l'identifiant ${id}`);
-                displayPokemons(); // Mettre à jour la liste des Pokémons après l'ajout
-            })
+                displayPokemons(); // Mettre à jour la liste des Pokémons après l'ajout            
+            })            
             .catch((error) => {
                 console.error(error.message);
             });
         }
     }
+    
 
     // Fonction pour supprimer un Pokémon
-    function deletePokemon() {
-        const pokemonId = prompt("Entrez l'ID du Pokémon à supprimer");
-        if (pokemonId) {
-            fetch(`/pokemons/${pokemonId}`, {
-                method: "DELETE",
-            })
-            .then((res) => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    throw Error("Erreur lors de la suppression du Pokémon");
-                }
-            })
-            .then(() => {
-                displayPokemons(); // Mettre à jour la liste des Pokémons après la suppression
-            })
-            .catch((error) => {
-                console.error(error.message);
-            });
+    function deletePokemon(pokemonId) {
+        if (!pokemonId) {
+            console.error("ID du Pokémon non défini");
+            return;
         }
-    }
+    
+        fetch(`/pokemons/${pokemonId}`, {
+            method: "DELETE",
+        })
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw Error("Erreur lors de la suppression du Pokémon");
+            }
+        })
+        .then(() => {
+            displayPokemons(); // Mettez à jour la liste des Pokémons après la suppression
+        })
+        .catch((error) => {
+            console.error(error.message);
+        });
+    }    
+        
 
     // Associer des événements aux boutons
     document.getElementById("addPokemonButton").addEventListener("click", addPokemon);

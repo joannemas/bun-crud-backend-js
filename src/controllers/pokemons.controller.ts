@@ -15,30 +15,33 @@ export const PokemonController = (app: Elysia) => {
       }
     })
     .post(
-        '/pokemons',
-        async ({ set, body }: Elysia.Set, handler: Elysia.Handler) => {
-            try {
-                const { name, type } = body;
-                const newPokemon = new Pokemon({ name, type });
-                const savedPokemon = await newPokemon.save();
-                set.status = 201;
-    
-                // Ici, renvoyez l'identifiant dans la réponse
-                return { id: savedPokemon._id, name: savedPokemon.name, type: savedPokemon.type };
-            } catch (error) {
-                set.status = 500;
-                return { error: 'Erreur lors de la création du Pokémon' };
-            }
-        },
-        {
-            schema: {
-                body: t.Object({
-                    name: t.String(),
-                    type: t.String(),
-                }),
-            },
+      '/pokemons',
+      async ({ set, body }: Elysia.Set, handler: Elysia.Handler) => {
+        try {
+          const { name, type } = body;
+          const newPokemon = new Pokemon({ name, type });
+          // Après avoir sauvegardé le nouveau Pokémon
+          const savedPokemon = await newPokemon.save();
+          set.status = 201;
+
+          // Ici, renvoyez l'identifiant dans la réponse
+          return { id: savedPokemon._id, name: savedPokemon.name, type: savedPokemon.type };
+
+        } catch (error) {
+          set.status = 500;
+          return { error: 'Erreur lors de la création du Pokémon' };
         }
+      },
+      {
+        schema: {
+          body: t.Object({
+            name: t.String(),
+            type: t.String(),
+          }),
+        },
+      }
     )
+    
     
     .put(
       '/pokemons/:id',
