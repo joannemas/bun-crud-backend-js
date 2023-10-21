@@ -3,16 +3,22 @@
   "module": "index.js",
   "type": "module",
   "devDependencies": {
+    "@types/passport": "^1.0.14",
+    "@types/passport-jwt": "^3.0.11",
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@elysiajs/cors": "^0.7.1",
     "@elysiajs/html": "^0.7.3",
     "bun": "^1.0.6",
     "elysia": "^0.7.17",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.6.3",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "sqlite3": "^5.1.6"
   },
   "scripts": {

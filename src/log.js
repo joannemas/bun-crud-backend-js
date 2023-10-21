@@ -1,8 +1,6 @@
-console.log('log.js chargé');
-
 document.addEventListener('DOMContentLoaded', function () {
     const registrationForm = document.getElementById('registrationForm');
-    const message = document.getElementById('message');
+    const messageReg = document.getElementById('messageReg');
 
     registrationForm.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -26,10 +24,48 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .then((data) => {
-            message.textContent = data.message; // Affichez un message de succès
+            messageReg.textContent = data.message; // Affichez un message de succès
         })
         .catch((error) => {
-            message.textContent = error.message; // Affichez un message d'erreur
+            messageReg.textContent = error.message; // Affichez un message d'erreur
+        });
+    });
+
+    const loginForm = document.getElementById('loginForm');
+    const messageLog = document.getElementById('messageLog');
+
+    loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const username = document.getElementById('usernameLog').value;
+        const password = document.getElementById('passwordLog').value;
+
+        // Envoyez les données de connexion au serveur.
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        })
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error('Erreur lors de la connexion');
+            }
+        })
+        .then((data) => {
+            if (data.success) {
+                // Username et password valide, poursuivez le processus de connexion.
+                window.location.href = '/'; // Redirigez vers la page d'accueil (vous pouvez spécifier l'URL souhaitée).
+            } else {
+                messageLog.textContent = data.message; // Affichez un message d'erreur
+            }
+        })
+        .catch((error) => {
+            console.error('Erreur de connexion :', error);
+            // En cas d'erreur lors de la connexion, affichez un message d'erreur.
+            messageLog.textContent = 'Erreur lors de la connexion';
         });
     });
 });
