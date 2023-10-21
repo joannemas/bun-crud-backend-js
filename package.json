@@ -11,8 +11,10 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@elysiajs/cookie": "^0.7.0",
     "@elysiajs/cors": "^0.7.1",
     "@elysiajs/html": "^0.7.3",
+    "@elysiajs/jwt": "^0.7.0",
     "bun": "^1.0.6",
     "elysia": "^0.7.17",
     "jsonwebtoken": "^9.0.2",

@@ -3,6 +3,7 @@ import { html } from '@elysiajs/html';
 import { PokemonController } from './controllers/pokemons.controller';
 import { UserController } from './controllers/users.controller';
 import cors from '@elysiajs/cors';
+import { verifyToken } from './auth/jwt.setup';
 
 const app = new Elysia();
 const port = process.env.PORT || 3000;

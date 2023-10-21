@@ -1,6 +1,7 @@
 import { Elysia, t } from 'elysia';
 import User from '../models/user.schema';
 import '../database/db.setup';
+import { createToken } from '../auth/jwt.setup';
 
 export const UserController = (app: Elysia) => {
     app.post('/users', async ({ set, body }: Elysia.Set) => {
@@ -37,8 +38,9 @@ export const UserController = (app: Elysia) => {
                 return { message: 'Mot de passe incorrect.' };
             }
     
+            const token = createToken(user); // Créez un token JWT
             set.status = 200;
-            return { message: 'Connexion réussie' };
+            return { message: 'Connexion réussie', success: true, token };
         } catch (error) {
             set.status = 500;
             return { error: 'Erreur lors de la connexion' };
