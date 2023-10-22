@@ -10,14 +10,14 @@ Before running the application, you need to install the required dependencies an
 
 ### Install Dependencies
 
-` bun i`
+`bun i`
 
 ### Set Up Environment Variables
 
 Create a .env file in the project root directory and define the following variables:
 
 ````
-MONGO_URI=<Your MongoDB URI> # MongoDB connection string
+MONGODB_URI=<Your MongoDB URI> # MongoDB connection string
 
 JWT_SECRET=<Your JWT Secret Key> # Secret key for JWT
 ````
